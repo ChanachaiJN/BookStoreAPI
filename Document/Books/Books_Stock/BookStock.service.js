@@ -97,8 +97,5 @@ async function SearchByKeyWord(word){
               bookName:{$regex: word }
             },
           ]
-    }, { isRent : false
-
-        
-    })
+    , isRent : false})
 }

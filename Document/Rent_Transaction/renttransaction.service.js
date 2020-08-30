@@ -92,7 +92,7 @@ async function create(userParam) {
         bookName: userParam.bookName,
         isRent: false
     });
-    if (currentstocklist.length < 2) throw userParam.bookName + ' only has 1 ';
+    if (currentstocklist.length < 2) throw userParam.bookName + ' only has 1';
     let currentCustomer = await Customer.findOne({
         CustomerID: userParam.CustomerID
     });

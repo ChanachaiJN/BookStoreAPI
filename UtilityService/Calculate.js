@@ -8,7 +8,7 @@ function CalRentPrice (header) {
     let End = new moment(header.EndDate);
     let diffdate = End.diff(Start, 'days');
     console.log(Start,End,diffdate);
-    header.rentPrice  = header.initPrice * diffdate;
+    header.rentPrice  = header.initPrice * (diffdate ==0 ? 0 : diffdate-1);
     
     if(diffdate > 3){
         header.FeePrice = 20 * (diffdate - 2);
