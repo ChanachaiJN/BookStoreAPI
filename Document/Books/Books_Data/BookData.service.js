@@ -1,4 +1,3 @@
-
 const db = require('../../../UtilityService/db');
 const BookData = db.BookDatas;
 
@@ -8,7 +7,8 @@ module.exports = {
     getByName,
     create,
     delete: _delete,
-    deleteByBookName :_deleteByBookName
+    deleteByBookName: _deleteByBookName,
+    SearchByKeyWord
 };
 
 
@@ -20,7 +20,9 @@ async function getById(id) {
     return await BookData.findById(id);
 }
 async function getByName(id) {
-    return await BookData.findOne({bookName : id});
+    return await BookData.findOne({
+        bookName: id
+    });
 }
 
 async function create(userParam) {
@@ -28,20 +30,35 @@ async function create(userParam) {
 
     const bookdata = new BookData(userParam);
     bookdata.rentPrice = Math.floor(bookdata.bookPrice / 10.00)
-    let currentbookdata  =await BookData.findOne({bookName : userParam.bookName});
-    console.log(currentbookdata,userParam.bookName);
-    if(currentbookdata ) throw  userParam.bookName +"'books "+' has been created'
+    let currentbookdata = await BookData.findOne({
+        bookName: userParam.bookName
+    });
+    console.log(currentbookdata, userParam.bookName);
+    if (currentbookdata) throw userParam.bookName + "'books " + ' has been created'
 
     // save user
     await bookdata.save();
 
-    return  await bookdata;
+    return await bookdata;
 }
 
 async function _delete(id) {
     await BookData.findByIdAndRemove(id);
 }
 async function _deleteByBookName(id) {
-    const BookData = BookData.find({bookName : id});
+    const BookData = BookData.find({
+        bookName: id
+    });
     await BookData.findByIdAndRemove(BookData.id);
+}
+
+async function SearchByKeyWord(word) {
+    return await BookData.find({
+
+        $or: [{
+            bookName: {
+                $regex: word
+            }
+        }, ]
+    })
 }

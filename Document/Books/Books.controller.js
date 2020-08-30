@@ -6,7 +6,9 @@ const BookStockService = require('./Books_Stock/bookStock.service');
 router.post('/CreateNewBook', register);
 router.post('/ImportBook', importNewBook);
 router.get('/Stock/',getAllStock);
+router.post('/SearchAvailStockByKeyword',getStockByBookName);
 router.get('/BookList/',getAll);
+router.post('/SearchBookByKeyword',getFromKeyWord);
 module.exports = router;
 
 function register(req,res,next){
@@ -14,6 +16,20 @@ function register(req,res,next){
     .then(data => res.json(data))
     .catch(err => next(err));
 }
+
+function getStockByBookName(req,res,next){
+    BookStockService.SearchByKeyWord(req.body.keyword)
+    .then(stock => res.json(stock))
+    .catch(err => next(err));
+}
+
+
+function getFromKeyWord(req,res,next){
+    BookDataService.SearchByKeyWord(req.body.keyword)
+    .then(stock => res.json(stock))
+    .catch(err => next(err));
+}
+
 
 function importNewBook(req,res,next){
     BookStockService.create(req.body)

@@ -15,7 +15,8 @@ module.exports = {
     EndRentTransaction,
     getByCustomer,
     getByBookName,
-    getCurrentRent
+    getCurrentRent,
+    SearchByKeyWord
 };
 
 
@@ -39,7 +40,7 @@ async function getByCustomer(id) {
 }
 async function getByBookName(id) {
     return await RentHeader.find({
-        bookName: id
+        bookName: {$regex: id }
     });
 }
 async function getCurrentRent() {
@@ -47,7 +48,27 @@ async function getCurrentRent() {
         isEnd: false
     });
 }
+async function SearchByKeyWord(word){
+    console.log(word)
+    return await RentHeader.find({
 
+        $or: [
+            {
+              CustomerName:{$regex: word }
+            },
+            {
+                CustomerLastName:{$regex: word }
+            },
+            {
+                CustomerID:{$regex: word }
+            },
+            {
+                bookName:{$regex: word }
+            }       
+        ]
+   ,
+   isEnd: false})
+}
 async function EndRentTransaction(userParam) {
     let Transaction = await RentHeader.findOne({
         CustomerID: userParam.CustomerID,

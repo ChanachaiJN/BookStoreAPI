@@ -5,6 +5,7 @@ const CustomerService = require('./Customer.service');
 // routes
 router.post('/register', register);
 router.get('/', getAll);
+router.post('/SearchFromKeyWord', getFromKeyWord);
 router.get('/:cusid', getByCusId);
 
 module.exports = router;
@@ -23,6 +24,13 @@ function register(req, res, next) {
 }
     
    
+function getFromKeyWord(req, res, next) {
+    console.log( req.body.keyword);
+    CustomerService.SearchByKeyWord(req.body.keyword)
+    
+        .then(Customers => res.json(Customers))
+        .catch(err => next(err));
+}
 
 function getAll(req, res, next) {
     CustomerService.getAll()

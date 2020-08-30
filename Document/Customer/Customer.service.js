@@ -13,7 +13,8 @@ module.exports = {
     updateByCusId,
     CreateCustomerID,
     delete: _delete,
-    deleteByCusid : _deleteByCusid
+    deleteByCusid : _deleteByCusid,
+    SearchByKeyWord
 };
 
 
@@ -79,4 +80,21 @@ async function _deleteByCusid(id) {
 }
 async function CreateCustomerID(){
     return await  'CUS-'+ (await Customer.countDocuments() +1)
+}
+
+async function SearchByKeyWord(word){
+    return await Customer.find({
+
+        $or: [
+            {
+              firstName:{$regex: word }
+            },
+            {
+                lastName:{$regex: word }
+            },
+            {
+                CustomerID:{$regex: word }
+            },
+          ]
+    })
 }

@@ -10,7 +10,9 @@ module.exports = {
     getByBookName,
     getAvailByBookName,
     deleteByItemKEY: _deleteByItemKEY,
-    updateIsRent
+    updateIsRent,
+    SearchByKeyWord
+
 };
 
 
@@ -85,4 +87,18 @@ async function updateIsRent(ItemKEY, isRent) {
     book.isRent = isRent;
 
     await book.save();
+}
+
+async function SearchByKeyWord(word){
+    return await BookStocks.find({
+
+        $or: [
+            {
+              bookName:{$regex: word }
+            },
+          ]
+    }, { isRent : false
+
+        
+    })
 }

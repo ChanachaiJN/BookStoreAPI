@@ -8,6 +8,7 @@ const BookDataService = require('./Books/Books_Data/BookData.service');
 // routes
 router.post('/CreateNewRent', CreateNewRent);
 router.get('/RentTransaction', getAll);
+router.post('/SearchRentTransaction', SearchRentTransaction);
 router.get('/RentTransaction/:headerid', getByHeaderId);
 router.get('/CurrentTransaction', currentRent);
 router.post('/returnbooks', returnbooks);
@@ -18,6 +19,16 @@ module.exports = router;
 function CreateNewRent(req, res, next) {
 
     RentTransactionService.create(req.body).then(customer => res.json(customer))
+    .catch(err => next(err));
+
+
+
+
+}
+
+function SearchRentTransaction(req, res, next) {
+console.log(req.body,req.body.keyword);
+    RentTransactionService.SearchByKeyWord(req.body.keyword).then(customer => res.json(customer))
     .catch(err => next(err));
 
 
